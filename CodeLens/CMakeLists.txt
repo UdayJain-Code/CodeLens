@@ -1,0 +1,16 @@
+cmake_minimum_required(VERSION 3.10)
+project(CodeLens CXX)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(CORE_SRC src/file_loader.cpp src/lexer.cpp src/normalizer.cpp src/fingerprint.cpp
+             src/similarity.cpp src/report.cpp src/pipeline.cpp)
+add_executable(codelens ${CORE_SRC} src/menu.cpp src/cli.cpp src/main.cpp)
+add_executable(codelens_tests ${CORE_SRC} tests/test_main.cpp)
+target_include_directories(codelens_tests PRIVATE src)
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+  target_compile_options(codelens PRIVATE -Wall -Wextra)
+  target_compile_options(codelens_tests PRIVATE -Wall -Wextra)
+endif()
+enable_testing()
+add_test(NAME unit COMMAND codelens_tests)
